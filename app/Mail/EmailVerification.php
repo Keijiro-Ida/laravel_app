@@ -32,7 +32,7 @@ class EmailVerification extends Mailable
     {
         return $this
         ->subject('【腸活アプリ】仮登録完了しました。')
-        ->view('auth.emails.pre_register')
+        ->view('emails.pre_register')
         ->with(['token' => $this->user->email_verify_token]);
     }
 }

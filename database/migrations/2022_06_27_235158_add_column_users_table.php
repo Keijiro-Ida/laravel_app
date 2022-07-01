@@ -15,6 +15,10 @@ class AddColumnUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->tinyInteger('status')->default(0);
+            $table->string('name_pronunciation')->nullable();
+            $table->integer('birth_year')->nullable();
+            $table->integer('birth_month')->nullable();
+            $table->integer('birth_day')->nullable();
         });
     }
 
@@ -27,6 +31,10 @@ class AddColumnUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('status');
+            $table->dropColumn('name_pronunciation');
+            $table->dropColumn('birth_year');
+            $table->dropColumn('birth_month');
+            $table->dropColumn('birth_day');
         });
     }
 }

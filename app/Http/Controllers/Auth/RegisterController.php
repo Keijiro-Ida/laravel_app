@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
-
+use App\Mail\EmailVerification;
+use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 
 
 
@@ -68,7 +70,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+            $user = User::create([
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'email_verify_token' => base64_encode($data['email']),
@@ -115,12 +117,36 @@ class RegisterController extends Controller
             }
             // ユーザーステータス更新
             $user->status = config('const.USER_STATUS.MAIL_AUTHED');
-            $user->verify_at = Carbon::now();
+            $user->email_verified_at = Carbon::now();
             if($user->save()) {
                 return view('auth.main.register', compact('email_token'));
             } else{
                 return view('auth.main.register')->with('message', 'メール認証に失敗しました。再度、メールからリンクをクリックしてください。');
             }
         }
+    }
+
+    public function mainCheck(Request $request) {
+
+        $request->validate([
+            'name' => 'required|string',
+            'name_pronunciation' => 'required|string',
+            'birth_year' => 'required|numeric',
+            'birth_month' => 'required|numeric',
+            'birth_day' => 'required|numeric',
+          ]);
+          //データ保持用
+          $email_token = $request->email_token;
+
+          $user = new User();
+          $user->name = $request->name;
+          $user->name_pronunciation = $request->name_pronunciation;
+          $user->birth_year = $request->birth_year;
+          $user->birth_month = $request->birth_month;
+          $user->birth_day = $request->birth_day;
+
+          return view('auth.main.register_check', compact('user','email_token'));
+
+
     }
 }
