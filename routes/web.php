@@ -29,3 +29,6 @@ Route::post('register/main_check', 'Auth\RegisterController@mainCheck')->name('r
 
 Route::post('register/main_register', 'Auth\RegisterController@mainRegister')->name('register.main.registered');
 
+Route::get('login/google', 'Auth\LoginController@redirectToProvider');
+
+Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
