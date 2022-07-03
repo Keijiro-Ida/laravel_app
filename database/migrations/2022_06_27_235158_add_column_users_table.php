@@ -14,7 +14,7 @@ class AddColumnUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('status')->default(0);
+            $table->string('status')->default(0);
             $table->string('name_pronunciation')->nullable();
             $table->integer('birth_year')->nullable();
             $table->integer('birth_month')->nullable();
